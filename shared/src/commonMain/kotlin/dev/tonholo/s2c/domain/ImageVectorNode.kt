@@ -60,7 +60,7 @@ sealed interface ImageVectorNode {
             val comment = if (minified) "" else "// ${wrapper.normalizedPath}\n|"
 
             return """
-                |${comment}path$pathParamsString {
+                |${comment}materialPath$pathParamsString {
                 |    $pathNodes
                 |}
             """.trimMargin()

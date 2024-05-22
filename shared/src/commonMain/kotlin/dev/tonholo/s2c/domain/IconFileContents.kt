@@ -7,11 +7,9 @@ import dev.tonholo.s2c.logger.verboseSection
 import kotlin.math.max
 
 val defaultImports = setOf(
-    "androidx.compose.ui.graphics.Color",
-    "androidx.compose.ui.graphics.SolidColor",
     "androidx.compose.ui.graphics.vector.ImageVector",
-    "androidx.compose.ui.graphics.vector.path",
-    "androidx.compose.ui.unit.dp",
+    "androidx.compose.material.icons.materialIcon",
+    "androidx.compose.material.icons.materialPath"
 )
 
 val previewImports = setOf(
@@ -49,6 +47,7 @@ data class IconFileContents(
     val noPreview: Boolean = false,
     val makeInternal: Boolean = false,
     val imports: Set<String> = defaultImports,
+    val useMaterialIconBuilder: Boolean = false
 ) {
     fun materialize(): String = verboseSection("Generating file") {
         verbose(
@@ -124,15 +123,9 @@ data class IconFileContents(
             |        val current = _${iconName.camelCase()}
             |        if (current != null) return current
             |
-            |        return ImageVector.Builder(
-            |            name = "$theme.${iconName.pascalCase()}",
-            |            defaultWidth = $width.dp,
-            |            defaultHeight = $height.dp,
-            |            viewportWidth = ${viewportWidth}f,
-            |            viewportHeight = ${viewportHeight}f,
-            |        ).apply {
+            |        return materialIcon(name = "$theme.${iconName.pascalCase()}") {
             |            $pathNodes
-            |        }.build().also { _${iconName.camelCase()} = it }
+            |        }.also { _${iconName.camelCase()} = it }
             |    }
             ${preview.trim()}
             |@Suppress("ObjectPropertyName")
